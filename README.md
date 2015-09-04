@@ -1,4 +1,4 @@
-# Drupal Backup - Tomadoh
+# Drupal Backup
 
 A simple set of bash scripts for backuping up and restoring drupal installations, works with D7 and D8.
 
