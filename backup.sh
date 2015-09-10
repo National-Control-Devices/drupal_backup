@@ -15,24 +15,24 @@ if [ -z "$1" ]; then
     done
     echo "-------------------"
     ((index--))
-    	while true
-	do
-		read -p "(1-$index) or valid installation path: " selected
-		case $selected in
-			$'\e') exit 1
-		esac
-		if [ "$index" -lt "$selected" ]; then
-			if [[ -d "$selected" && -f "$selected/sites/default/settings.php" ]]; then
-    		            	instance=$selected
-				break
-            		else
-                    		echo "you must select a valid drupal instalation"
-            		fi
-    		else
-            		instance=${instances[$selected]}
-			break
-    		fi
-	done
+        while true
+        do
+                read -p "(1-$index) or valid installation path: " selected
+                case $selected in
+                        $'\e') exit 1
+                esac
+                if [ "$index" -lt "$selected" ]; then
+                        if [[ -d "$selected" && -f "$selected/sites/default/settings.php" ]]; then
+                                instance=$selected
+                                break
+                        else
+                                echo "you must select a valid drupal installation"
+                        fi
+                else
+                        instance=${instances[$selected]}
+                        break
+                fi
+        done
 else
     instance=$1
 fi
@@ -42,21 +42,21 @@ USER=$(php backup_restore/backup.php --site "$instance" --fetch "username")
 PASSWORD=$(php backup_restore/backup.php --site "$instance" --fetch "password")
 FILENAME="$instance-"$(date +"%Y-%m-%d_%H-%M-%S")".zip"
 
-mkdir backup_tmp
-mkdir backup_tmp/backup
+mkdir /var/www/backup_restore/backup_tmp
+mkdir /var/www/backup_restore/backup_tmp/backup
 echo "Created Temporary Directory"
 cd $instance
-zip -rq ../backup_tmp/backup/docroot.zip .
+zip -rq /var/www/backup_restore/backup_tmp/backup/docroot.zip .
 echo "Zipped docroot"
 cd ..
-mysqldump -u $USER -p$PASSWORD $DB > backup_tmp/backup/db.sql
+mysqldump -u $USER -p$PASSWORD $DB > /var/www/backup_restore/backup_tmp/backup/db.sql
 echo "exported SQL"
-cd backup_tmp
+cd /var/www/backup_restore/backup_tmp
 zip -rq backup.zip backup
 echo "zipped backup"
-mv backup.zip ../backup_restore/backups/$FILENAME
+mv backup.zip /var/www/backup_restore/backups/$FILENAME
 cd ..
-rm -r backup_tmp
+rm -r /var/www/backup_restore/backup_tmp
 echo "removed temp files"
 echo "complete"
 exit 1
