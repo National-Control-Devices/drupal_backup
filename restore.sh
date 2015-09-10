@@ -6,9 +6,9 @@ echo "Select a file to restore from:"
 echo "--------------------"
 for f in *.zip
 do
-	echo "[$index] $f"
-	files[$index]=$f
-	((index++))
+        echo "[$index] $f"
+        files[$index]=$f
+        ((index++))
 done
 ((index--))
 echo "--------------------"
@@ -16,12 +16,12 @@ echo "select backup file to restore"
 
 while true
 do
-	read -p "(1-$index): " selected
-	if [[ ${files[$selected]} ]]; then
-		break
-	else
-		echo "Please select a valid file"
-	fi
+        read -p "(1-$index): " selected
+        if [[ ${files[$selected]} ]]; then
+                break
+        else
+                echo "Please select a valid file"
+        fi
 done
 
 backup=${files[$selected]}
@@ -62,7 +62,7 @@ cd /var/www
 echo "Where would you like to restore this backup to?"
 echo "--------------------"
 for f in *; do
-	if [[ -f "$f/sites/default/settings.php" ]]; then
+        if [[ -f "$f/sites/default/settings.php" ]]; then
                 echo "[$index] $f"
                 instances[$index]=$f
                 ((index++))
@@ -75,26 +75,26 @@ echo "Select a destination directory, or enter a path to a custom directory"
 
 while true
 do
-	read -p "(1-$index or path)" selected
-	case $selected in
-		$'\e') rm -r /var/www/backup_restore/tmp
-			exit 1
-			;;
-		*)
-			if [[ ${instances[$selected]} ]]; then
-        			instance=${instances[$selected]}
-			else
-        			instance=$selected
-			fi
-			break
-			;;
-	esac
+        read -p "(1-$index or path): " selected
+        case $selected in
+                $'\e') rm -r /var/www/backup_restore/tmp
+                        exit 1
+                        ;;
+                *)
+                        if [[ ${instances[$selected]} ]]; then
+                                instance=${instances[$selected]}
+                        else
+                                instance=$selected
+                        fi
+                        break
+                        ;;
+        esac
 done
 
 cd /var/www
 
 if [ -d $instance ]; then
-	rm -r $instance
+        rm -r $instance
 fi
 
 echo "Moving docroot to $instance"
